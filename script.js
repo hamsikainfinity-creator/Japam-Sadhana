@@ -1,9 +1,16 @@
+
 // --- SAFE ENVIRONMENT SETUP ---
 // This ensures 'process' exists even in browser to avoid ReferenceError
+// NOTE: In a production environment, API keys should not be hardcoded in client-side files.
+const REACT_APP_GEMINI_API_KEY = 'AIzaSyACIbsyYxPs9wPAaLzL8Gav69o67LADvRQ';
+
 if (typeof process === 'undefined') {
-    window.process = { env: { API_KEY: '' } };
+    window.process = { env: { API_KEY: REACT_APP_GEMINI_API_KEY } };
 } else if (!process.env) {
-    process.env = { API_KEY: '' };
+    process.env = { API_KEY: REACT_APP_GEMINI_API_KEY };
+} else {
+    // If process.env exists, ensure key is attached
+    process.env.API_KEY = process.env.API_KEY || REACT_APP_GEMINI_API_KEY;
 }
 
 // --- DATA ---
@@ -72,25 +79,22 @@ const MANTRAS = [
 // --- INITIALIZATION ---
 function initApp() {
     console.log("Japam App Initializing...");
-    const loadingEl = document.getElementById('loading-indicator');
     
     try {
         if (document.getElementById('dashboard-container')) {
             renderDashboard();
-            if(loadingEl) loadingEl.remove(); // Force remove
         } else if (document.getElementById('mantra-detail-container')) {
             renderMantraDetail();
-            if(loadingEl) loadingEl.remove();
         } else {
             console.warn("No valid container found.");
         }
     } catch (e) {
         console.error("Initialization Error", e);
-        if (loadingEl) {
-            loadingEl.innerHTML = `<div class="text-red-600 p-4 border border-red-200 rounded bg-red-50">
-                <p class="font-bold">Error loading content:</p>
-                <p class="text-sm">${e.message}</p>
-            </div>`;
+        const container = document.getElementById('error-container');
+        if (container) {
+            container.classList.remove('hidden');
+            const msg = document.getElementById('error-message');
+            if(msg) msg.textContent = e.message;
         }
     }
 }

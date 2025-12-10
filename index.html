@@ -15,8 +15,6 @@
         window.onerror = function(msg, url, lineNo, columnNo, error) {
             var container = document.getElementById('error-container');
             var message = document.getElementById('error-message');
-            var loader = document.getElementById('loading-indicator');
-            if (loader) loader.style.display = 'none';
             if (container && message) {
                 container.classList.remove('hidden');
                 message.textContent = msg + " (Line: " + lineNo + ")";
@@ -28,9 +26,9 @@
 <script type="importmap">
 {
   "imports": {
+    "react/": "https://esm.sh/react@^19.2.1/",
     "react": "https://esm.sh/react@^19.2.1",
     "lucide-react": "https://esm.sh/lucide-react@^0.559.0",
-    "react/": "https://esm.sh/react@^19.2.1/",
     "react-router-dom": "https://esm.sh/react-router-dom@^7.10.1"
   }
 }
@@ -63,11 +61,7 @@
 
         <!-- Dashboard: Categories and Cards will be injected here -->
         <div id="dashboard-container" class="space-y-8 animate-fade-in-up min-h-[300px]">
-             <!-- Loading State -->
-             <div id="loading-indicator" class="flex flex-col items-center justify-center py-20 opacity-70">
-                <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-600 mb-4"></div>
-                <p class="text-lg">మంత్రాలను లోడ్ చేస్తోంది...</p>
-             </div>
+             <!-- Content renders here immediately via script.js -->
         </div>
     </main>
 

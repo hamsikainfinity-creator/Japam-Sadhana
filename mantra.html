@@ -15,8 +15,6 @@
         window.onerror = function(msg, url, lineNo, columnNo, error) {
             var container = document.getElementById('error-container');
             var message = document.getElementById('error-message');
-            var loader = document.getElementById('loading-indicator');
-            if (loader) loader.style.display = 'none';
             if (container && message) {
                 container.classList.remove('hidden');
                 message.textContent = msg + " (Line: " + lineNo + ")";
@@ -47,11 +45,7 @@
         </div>
 
         <div id="mantra-detail-container" class="min-h-[400px]">
-             <!-- Loading State -->
-             <div id="loading-indicator" class="flex flex-col items-center justify-center py-20 opacity-70">
-                <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-600 mb-4"></div>
-                <p class="text-lg">లోడ్ అవుతోంది...</p>
-             </div>
+             <!-- Content renders here immediately via script.js -->
         </div>
     </main>
 
