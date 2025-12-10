@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="te">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Japam Sadhana</title>
+    <link rel="icon" type="image/svg+xml" href="https://picsum.photos/32/32" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Telugu:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <!-- Global Error Handler to catch script loading issues -->
+    <script>
+        window.onerror = function(msg, url, lineNo, columnNo, error) {
+            var container = document.getElementById('error-container');
+            var message = document.getElementById('error-message');
+            var loader = document.getElementById('loading-indicator');
+            if (loader) loader.style.display = 'none';
+            if (container && message) {
+                container.classList.remove('hidden');
+                message.textContent = msg + " (Line: " + lineNo + ")";
+            }
+            console.error('Global Error:', error);
+            return false;
+        };
+    </script>
+<script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@^19.2.1",
+    "lucide-react": "https://esm.sh/lucide-react@^0.559.0",
+    "react/": "https://esm.sh/react@^19.2.1/",
+    "react-router-dom": "https://esm.sh/react-router-dom@^7.10.1"
+  }
+}
+</script>
+</head>
+<body class="bg-orange-50 font-telugu text-orange-950">
+    <!-- Header -->
+    <header class="bg-gradient-to-r from-orange-500 to-red-600 text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <svg class="w-6 h-6 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path></svg>
+                <h1 class="text-xl font-bold tracking-wide">Japam Sadhana</h1>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-4xl mx-auto p-4 md:p-6 pb-20">
+        <!-- Error Container (Hidden by default) -->
+        <div id="error-container" class="hidden bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-6" role="alert">
+            <strong class="font-bold">Error!</strong>
+            <span class="block sm:inline" id="error-message">Something went wrong.</span>
+        </div>
+
+        <!-- Welcome Message -->
+        <div class="bg-gradient-to-br from-amber-100 to-orange-50 p-6 rounded-2xl border border-orange-200 text-center mb-8 animate-fade-in">
+            <h2 class="text-2xl font-bold text-orange-800 mb-2">శుభోదయం</h2>
+            <p class="text-orange-700 opacity-90">ఈ రోజు మీరు ఏ మంత్రాన్ని జపించాలనుకుంటున్నారు?</p>
+        </div>
+
+        <!-- Dashboard: Categories and Cards will be injected here -->
+        <div id="dashboard-container" class="space-y-8 animate-fade-in-up min-h-[300px]">
+             <!-- Loading State -->
+             <div id="loading-indicator" class="flex flex-col items-center justify-center py-20 opacity-70">
+                <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-600 mb-4"></div>
+                <p class="text-lg">మంత్రాలను లోడ్ చేస్తోంది...</p>
+             </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-orange-100 py-6 mt-auto border-t border-orange-200">
+        <div class="text-center text-orange-700 text-sm">
+            <p>© 2025 Japam Sadhana</p>
+            <p class="text-xs mt-1 opacity-75">ఓం శాంతిః శాంతిః శాంతిః</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="te">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mantra Japam</title>
+    <link rel="icon" type="image/svg+xml" href="https://picsum.photos/32/32" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Telugu:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <!-- Global Error Handler -->
+    <script>
+        window.onerror = function(msg, url, lineNo, columnNo, error) {
+            var container = document.getElementById('error-container');
+            var message = document.getElementById('error-message');
+            var loader = document.getElementById('loading-indicator');
+            if (loader) loader.style.display = 'none';
+            if (container && message) {
+                container.classList.remove('hidden');
+                message.textContent = msg + " (Line: " + lineNo + ")";
+            }
+            console.error('Global Error:', error);
+            return false;
+        };
+    </script>
+</head>
+<body class="bg-orange-50 font-telugu text-orange-950 min-h-screen flex flex-col">
+    <!-- Header -->
+    <header class="bg-gradient-to-r from-orange-500 to-red-600 text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-2 hover:bg-white/10 p-2 rounded-lg transition-colors">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                <span class="font-medium">వెనుకకు</span>
+            </a>
+            <h1 class="text-lg font-bold truncate ml-4 flex-1 text-right opacity-90">Japam Sadhana</h1>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-md mx-auto w-full p-4 flex-1 flex flex-col justify-center animate-zoom-in">
+        <!-- Error Container (Hidden by default) -->
+        <div id="error-container" class="hidden bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+            <strong class="font-bold">Error!</strong>
+            <span class="block sm:inline" id="error-message">Something went wrong.</span>
+        </div>
+
+        <div id="mantra-detail-container" class="min-h-[400px]">
+             <!-- Loading State -->
+             <div id="loading-indicator" class="flex flex-col items-center justify-center py-20 opacity-70">
+                <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-600 mb-4"></div>
+                <p class="text-lg">లోడ్ అవుతోంది...</p>
+             </div>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
