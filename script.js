@@ -1,7 +1,7 @@
 
 // --- SAFE ENVIRONMENT SETUP ---
 // This ensures 'process' exists even in browser to avoid ReferenceError
-// NOTE: In a production environment, API keys should not be hardcoded in client-side files.
+// API Key provided by user
 const REACT_APP_GEMINI_API_KEY = 'AIzaSyACIbsyYxPs9wPAaLzL8Gav69o67LADvRQ';
 
 if (typeof process === 'undefined') {
@@ -107,6 +107,39 @@ if (document.readyState === 'loading') {
     initApp();
 }
 
+// --- IMAGE UTILS ---
+function getMantraImage(title, category) {
+    let keyword = 'Hindu spiritual meditation'; // Default
+
+    const t = title.toLowerCase();
+    
+    if (t.includes('shiva') || t.includes('shiv') || t.includes('mahamrityunjaya') || t.includes('rudram') || t.includes('panchakshara')) keyword = 'Lord Shiva Hindu God meditation';
+    else if (t.includes('narayan') || t.includes('vishnu') || t.includes('venkateswara') || t.includes('govinda')) keyword = 'Lord Vishnu Hindu God';
+    else if (t.includes('ram') || t.includes('raghavendra')) keyword = 'Lord Rama Hindu God';
+    else if (t.includes('krishna') || t.includes('vasudeva') || t.includes('gopijana')) keyword = 'Lord Krishna Hindu God';
+    else if (t.includes('ganap') || t.includes('ganesh') || t.includes('vinayaka') || t.includes('vakratunda')) keyword = 'Lord Ganesha Hindu God';
+    else if (t.includes('durga') || t.includes('devi') || t.includes('shakti') || t.includes('chamunda')) keyword = 'Goddess Durga Hindu Devi';
+    else if (t.includes('lakshmi')) keyword = 'Goddess Lakshmi Hindu Devi';
+    else if (t.includes('saraswat')) keyword = 'Goddess Saraswati Hindu Devi';
+    else if (t.includes('kali') || t.includes('kalika')) keyword = 'Goddess Kali Hindu Devi';
+    else if (t.includes('hanuman') || t.includes('bajarang') || t.includes('anjaneya')) keyword = 'Lord Hanuman Hindu God';
+    else if (t.includes('sai')) keyword = 'Shirdi Sai Baba';
+    else if (t.includes('subrahmanya') || t.includes('valli')) keyword = 'Lord Murugan Subrahmanya';
+    else if (t.includes('ayyappa')) keyword = 'Lord Ayyappa';
+    else if (t.includes('dattatreya')) keyword = 'Lord Dattatreya';
+    else if (t.includes('narasimha')) keyword = 'Lord Narasimha';
+    else if (t.includes('gayatri')) keyword = 'Goddess Gayatri Devi';
+    else if (t.includes('shan')) keyword = 'Lord Shani Dev';
+    else if (t.includes('navagraha')) keyword = 'Navagraha Hindu Gods';
+    else if (t.includes('aditya')) keyword = 'Sun God Surya';
+    
+    // Construct Pollinations URL (Dynamic, Free, Fast)
+    // We add 'nologo' and random seed logic (based on title length) to keep it consistent per mantra
+    const seed = title.length * 123; 
+    return `https://image.pollinations.ai/prompt/${encodeURIComponent(keyword + " serene spiritual painting art")}?width=400&height=400&nologo=true&seed=${seed}&model=flux`;
+}
+
+
 // --- LOGIC: DASHBOARD ---
 function renderDashboard() {
     const container = document.getElementById('dashboard-container');
@@ -137,24 +170,28 @@ function renderDashboard() {
 
         mantras.forEach(mantra => {
             const card = document.createElement('div');
-            card.className = "bg-white rounded-xl shadow-sm border border-orange-100 p-4 flex items-center justify-between cursor-pointer mantra-card group";
+            card.className = "bg-white rounded-xl shadow-sm border border-orange-100 p-3 flex items-center justify-between cursor-pointer mantra-card group overflow-hidden";
             
             // Standard navigation
             card.onclick = function() {
                 window.location.href = 'mantra.html?id=' + mantra.id;
             };
 
+            const imgSrc = getMantraImage(mantra.title, mantra.category);
+
             card.innerHTML = `
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center text-orange-600 group-hover:bg-orange-500 group-hover:text-white transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+                <div class="flex items-center gap-4 w-full">
+                    <div class="w-16 h-16 flex-shrink-0 rounded-lg overflow-hidden bg-orange-100 shadow-inner">
+                        <img src="${imgSrc}" alt="${mantra.title}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" loading="lazy">
                     </div>
-                    <div>
-                        <h3 class="text-lg font-semibold text-gray-800 group-hover:text-orange-700 transition-colors">${mantra.title}</h3>
-                        <p class="text-xs text-gray-500 mt-0.5">మంత్రం తెరవండి</p>
+                    <div class="flex-1 min-w-0">
+                        <h3 class="text-lg font-semibold text-gray-800 group-hover:text-orange-700 transition-colors truncate">${mantra.title}</h3>
+                        <p class="text-xs text-orange-500 mt-0.5 font-medium">జపించండి (Chant Now)</p>
+                    </div>
+                    <div class="text-gray-300 group-hover:text-orange-500 group-hover:translate-x-1 transition-all">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
                     </div>
                 </div>
-                <svg class="text-gray-300 group-hover:text-orange-500 group-hover:translate-x-1 transition-all" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
             `;
             grid.appendChild(card);
         });
@@ -199,23 +236,28 @@ function renderMantraDetail() {
     } catch(e) {
         console.warn("Local storage error", e);
     }
+
+    const imgSrc = getMantraImage(mantra.title, mantra.category);
     
     // Render Template
     container.innerHTML = `
         <div class="bg-white rounded-3xl shadow-xl border border-orange-100 overflow-hidden relative animate-zoom-in">
-            <!-- Mandala Background Header -->
-            <div class="h-32 bg-gradient-to-r from-orange-400 to-red-500 relative">
-                <div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(circle, #fff 10%, transparent 10%); background-size: 20px 20px;"></div>
-                <div class="absolute -bottom-10 left-1/2 -translate-x-1/2 w-20 h-20 bg-white rounded-full flex items-center justify-center shadow-lg border-4 border-white">
-                    <span class="text-3xl font-bold text-orange-600">${mantra.id}</span>
+            <!-- Dynamic Image Background Header -->
+            <div class="h-48 relative bg-orange-200">
+                <img src="${imgSrc}" class="w-full h-full object-cover" alt="Mantra Deity">
+                <div class="absolute inset-0 bg-gradient-to-b from-transparent to-black/60"></div>
+                <div class="absolute bottom-4 left-0 right-0 text-center">
+                    <div class="inline-block px-4 py-1 bg-black/30 backdrop-blur-sm rounded-full border border-white/20">
+                         <span class="text-white/90 text-sm font-medium tracking-wider uppercase">${mantra.category}</span>
+                    </div>
                 </div>
             </div>
 
-            <div class="pt-12 pb-8 px-6 text-center space-y-6">
+            <div class="pt-8 pb-8 px-6 text-center space-y-6 relative -mt-6 bg-white rounded-t-3xl">
                 <!-- Titles -->
                 <div>
                     <h1 class="text-2xl font-bold text-gray-900 leading-tight mb-4">${mantra.title}</h1>
-                    <div class="bg-orange-50 p-6 rounded-2xl border border-orange-100 inline-block w-full">
+                    <div class="bg-orange-50 p-6 rounded-2xl border border-orange-100 inline-block w-full shadow-inner">
                         <p class="text-xl font-serif text-orange-800 leading-relaxed font-medium" id="mantra-text">
                            ${mantra.title}
                         </p>
@@ -224,27 +266,27 @@ function renderMantraDetail() {
 
                 <!-- Audio Controls -->
                 <div class="flex flex-col items-center gap-3">
-                    <button id="play-btn" class="w-16 h-16 rounded-full flex items-center justify-center shadow-lg transition-all duration-300 bg-orange-600 text-white hover:bg-orange-700 hover:scale-105">
-                        <svg id="play-icon" width="32" height="32" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-                        <svg id="pause-icon" class="hidden" width="32" height="32" viewBox="0 0 24 24" fill="currentColor" stroke="none"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>
+                    <button id="play-btn" class="w-20 h-20 rounded-full flex items-center justify-center shadow-lg transition-all duration-300 bg-orange-600 text-white hover:bg-orange-700 hover:scale-105 hover:shadow-orange-300/50">
+                        <svg id="play-icon" width="36" height="36" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                        <svg id="pause-icon" class="hidden" width="36" height="36" viewBox="0 0 24 24" fill="currentColor" stroke="none"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>
                     </button>
-                    <div id="status-text" class="h-6 text-sm font-medium text-gray-400">Click Play to Chant (5x)</div>
+                    <div id="status-text" class="h-6 text-sm font-medium text-gray-500">Click Play to Chant (5x)</div>
                 </div>
 
                 <div class="border-t border-gray-100 my-4 w-full"></div>
 
                 <!-- Counter -->
                 <div class="flex flex-col items-center gap-4">
-                    <h3 class="text-gray-500 font-medium uppercase tracking-widest text-xs">Japam Counter</h3>
-                    <div class="text-6xl font-bold text-gray-800 tabular-nums tracking-tight" id="counter-display">${count}</div>
+                    <h3 class="text-gray-400 font-bold uppercase tracking-widest text-xs">Japam Counter</h3>
+                    <div class="text-7xl font-bold text-gray-800 tabular-nums tracking-tight font-serif" id="counter-display">${count}</div>
                     
-                    <div class="flex items-center gap-4">
-                        <button id="reset-btn" class="p-3 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-full transition-colors" title="Reset">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 12"/><path d="M3 3v9h9"/></svg>
+                    <div class="flex items-center gap-4 mt-2">
+                        <button id="reset-btn" class="p-4 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-full transition-colors border border-transparent hover:border-red-100" title="Reset">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 12"/><path d="M3 3v9h9"/></svg>
                         </button>
-                        <button id="count-btn" class="flex items-center gap-2 px-8 py-3 bg-gray-900 text-white rounded-full shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-200">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
-                            <span class="font-semibold text-lg">Count</span>
+                        <button id="count-btn" class="flex items-center gap-2 px-10 py-4 bg-gray-900 text-white rounded-full shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-200 border border-gray-700">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+                            <span class="font-semibold text-xl">Count</span>
                         </button>
                     </div>
                 </div>
@@ -264,6 +306,9 @@ function renderMantraDetail() {
     countBtn.onclick = function() {
         count++;
         counterDisplay.textContent = count;
+        // Simple pop animation
+        countBtn.classList.add('scale-95');
+        setTimeout(() => countBtn.classList.remove('scale-95'), 100);
         try { localStorage.setItem('chant_count_' + id, count); } catch(e) {}
     };
 
@@ -292,7 +337,7 @@ async function toggleAudio(btn, statusEl, mantraTitle) {
         pauseIcon.classList.add('hidden');
         statusEl.textContent = "Audio Paused";
         statusEl.classList.remove('text-orange-600');
-        statusEl.classList.add('text-gray-400');
+        statusEl.classList.add('text-gray-500');
     } else {
         // START
         isPlaying = true;
@@ -304,9 +349,9 @@ async function toggleAudio(btn, statusEl, mantraTitle) {
         btn.classList.add('bg-red-50', 'text-red-600', 'playing-pulse');
         playIcon.classList.add('hidden');
         pauseIcon.classList.remove('hidden');
-        statusEl.classList.remove('text-gray-400');
+        statusEl.classList.remove('text-gray-500');
         statusEl.classList.add('text-orange-600');
-        statusEl.textContent = "Preparing...";
+        statusEl.textContent = "Preparing Divine Sound...";
 
         try {
             // Attempt to get GenAI Audio first (only once per session per page load for now)
@@ -318,7 +363,7 @@ async function toggleAudio(btn, statusEl, mantraTitle) {
                 } catch (e) {}
                 
                 if (apiKey) {
-                    statusEl.textContent = "Generating Divine Voice...";
+                    statusEl.textContent = "Synthesizing Chant (Gemini AI)...";
                     try {
                         genaiAudioBuffer = await generateMantraAudio(mantraTitle, apiKey);
                     } catch (err) {
@@ -381,8 +426,8 @@ async function generateMantraAudio(mantraTitle, apiKey) {
 
     const ai = new GoogleGenAI({ apiKey });
     
-    // Specific prompt
-    const promptText = "Chant the mantra '" + mantraTitle + "' in a gentle, soft female voice. Maintain a slow, rhythmic japam style appropriate for meditation. Add light natural reverb and a calm spiritual ambience. Pronunciation should be clear, traditional, and emotionally calming.";
+    // Specific prompt for 2.5 flash tts
+    const promptText = "Chant the mantra '" + mantraTitle + "' in a slow, deep, devotional female voice. The tone should be meditative, peaceful, and rhythmic, suitable for Japam. Add a slight hall reverb effect to sound like a temple.";
     
     const response = await ai.models.generateContent({
         model: "gemini-2.5-flash-preview-tts",
